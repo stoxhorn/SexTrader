@@ -1,10 +1,57 @@
 @startuml
 
 
-class graphIO{
-
+class GraphIO{
+    static TickerHandler
 }
 note right
 This needs to regularly ping binance for graph
 endnote
+GraphIO --> TickerHandler
+
+enum TimeFactor{}
+enum BarField{}
+
+class Bar{
+    candleData
+}
+
+class BarSeries{
+    List<Bar>
+}
+BarSeries --> Bar
+
+class Graph{
+    BarSeries
+}
+note right
+This class Contains a BarSeries,
+and methods and other stuff that keeps track of TA and indicators
+endnote
+Graph --> BarSeries
+
+class Ticker{
+    List<Graph>
+}
+note right
+This class contains the barSeries of all timeFrames of one Ticker
+endnote
+Ticker --> Graph
+
+
+class TickerHandler{
+    List<Ticker>
+}
+note right
+Manages all the graphs and interactions with them
+endnote
+TickerHandler --> Ticker
+
+class GraphParser{
+    static stuff
+}
+note right
+handles reading of graphinput
+endnote
+
 @enduml
