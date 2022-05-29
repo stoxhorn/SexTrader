@@ -1,0 +1,34 @@
+@startuml
+class EventHandler{
+    GraphIO TW
+    Trigger[] Triggers 
+}
+EventHandler *-- "0..*" Trigger
+EventHandler *-- GraphIO
+
+class Trigger{
+    int ID
+    Reaction newReaction
+}
+note bottom
+a Trigger tracks whether an event happens or not
+Should the event happen, it will contain a reaction,
+that either adds a new position, or changes one
+end note
+
+Trigger *-- Reaction
+
+abstract Reaction{}
+note left
+A reaction is an abstract class.
+it is essentially a catch-all for different ways of reacting to an event.
+Could activate a position
+could deactivate a position
+could change sellOrders in a position, or remove them. 
+end note
+
+class GraphIO{}
+note right
+This class handles reading data from the BTC/USDT graph
+end note
+@enduml

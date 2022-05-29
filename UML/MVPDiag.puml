@@ -1,0 +1,26 @@
+@startwbs
+
+* Different stages of trading program
+
+** MVP1: Implementation of CORE controlling logic
+*** Implementation of all controller classes
+*** Implementation of super simple trading logic that only reads graphs
+**** They should also pretend to make trades, \nthat can provide data for controller classes
+***** this requires a super simple usage of some Graph API. Preferrably Tradingview
+*** Final goal is to have the overall Architecture function together \nand provide a framework i can build the specifics on
+
+** MVP2: Implementation of Trading and data management
+*** I need to learn how to use the Apifiny API, to make trades and read my positions
+*** I need to learn how to use the Tradingview API, in order to get complex data from the graph
+*** Make a super simple strategy, that is able to make pretend trades, AND actual trades.
+**** check if there is a test/sandbox environment
+***< Figue out what to store and how to store it
+****< should i make my own Database of all trades and positions?
+****< should i start looking into cloud computing,\nor just assume/have my pc running at all times?
+****> How should i structure the code? i would need to have some IO class, that handles the data\nBut also a class that handles the data stored in memory more elegantly
+
+** MVP3: Implementation of all/wanted trading strategies
+***< hopefully the overall architecture should be made such that i can now implement the different trading strategies i've been thinking of. 
+***< This stage needs more planning, once i'm close to development.
+
+@endwbs

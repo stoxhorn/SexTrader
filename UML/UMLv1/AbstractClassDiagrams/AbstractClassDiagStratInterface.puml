@@ -1,0 +1,90 @@
+@startuml
+center header
+<font color=black>This is the general idea, without too many details</font>
+
+endheader
+
+class Wallet{
+    TFControl TraderAlgo
+    TFInterface IO
+}
+
+
+class Wallet
+note top
+Wallet is just the "container"/main class for now.
+This can contain other stuff, as i want to be able to add extra stuff
+Any profit from TFControl, is "sent" to this object, and simply saved up.
+end note
+
+Wallet *-- StratInterface
+
+class StratInterface{
+
+}
+note right
+Interface for adding/creating/removing strategies.
+This means it's also necessary to be able to create tactics here.
+end note
+
+StratInterface *-- StratControl
+
+class StratControl{
+    ArrayList<Strategy> strategies
+
+}
+note left
+This class contains strategies,
+logic handling communication with these, and between these,
+and generally acts as an API between all strategies contained here.
+end note
+
+StratControl *-- "1..*" Strategy
+
+abstract Strategy{
+    TacticControl tacts
+}
+
+Strategy *-- "1" TacticControl
+
+abstract Strategy
+note left
+Uses tactics for broader trading strategies.
+One strategy could use the logic of several tactics, before it "ends" a trade.
+Any Strategy that trades around a larger EMA,
+needs to have a tactic Above, and below the EMA. 
+
+For now it's marked as abstract.
+Maybe better to turn into an interface, idk for now.
+end note
+
+class TacticControl{
+    ArrayList<Tactic> tactics
+}
+
+TacticControl *-- "1..*" Tactic 
+
+class TacticControl
+note left
+Budgetting and logic for handling several Tactics,
+long with the data management
+end note
+
+abstract Tactic{
+
+}
+
+abstract Tactic
+note right
+Tactic is the "lowest" logic, and where trades are executed.
+A tactic can be much broarder and contain strategies itself.
+But a tactic must NEVER, be empty of any final actions.
+
+For now it's marked as abstract.
+Maybe better to turn into an interface, idk for now.
+end note
+
+Tactic *-- "0..*" StratControl
+Tactic *-- "0..*" TacticControl
+
+@enduml

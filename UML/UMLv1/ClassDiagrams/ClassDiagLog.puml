@@ -1,0 +1,20 @@
+@startuml
+center header
+<font color=black>Whetever else i figure out i need</font>
+endheader
+
+
+class LogIO{}
+
+note top
+Used to write a log message, and contains logic to decide which logfile to write to
+Also contains logic to read from any type of log
+end note
+
+LogIO *-- "0..*" Log
+
+abstract Log{}
+note bottom
+Can log various messages, and reads and writes to it's own file.
+end note
+@enduml

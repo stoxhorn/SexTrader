@@ -1,0 +1,10 @@
+@startuml
+
+
+class graphIO{
+
+}
+note right
+This needs to regularly ping binance for graph
+endnote
+@enduml

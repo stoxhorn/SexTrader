@@ -1,0 +1,84 @@
+@startuml
+class EventIO
+note right
+Contains an EventHandler as a static object in a seperate thread
+EventIO thread and the EventHandler thread shares two lists
+one list contains input commands for EventHandler
+The other list contains the output from EventHandler, ready to be read by something
+end note
+
+EventIO *-- EventHandler
+
+class EventHandler{
+    GraphIO TW
+    Trigger[] Triggers 
+}
+note right
+Not quite sure exactly how this should look,
+but it needs to contain logic to sort and organize triggers for easier/faster hit detection
+end note
+
+EventHandler *-- "0..*" Trigger
+EventHandler *-- GraphIO
+
+class GraphIO{
+    IndicatorValue getIndicatorValue(String indicatorName, String timeFactor)
+    
+}
+note top
+This class handles reading data from the BTC/USDT graph
+end note
+
+class Trigger{
+    int ID
+    String timeFactor
+    GraphEvent event
+    Reaction containedReaction
+
+    boolean checkEvent()
+    void runReaction()
+}
+note left
+a Trigger tracks whether an event happens or not
+Should the event happen, it will contain a reaction,
+that either adds a new position, or changes one
+end note
+
+Trigger *-- Reaction
+Trigger *-- GraphEvent
+
+abstract Reaction{
+    void run()
+}
+note left
+A reaction is an abstract class.
+it is essentially a catch-all for different ways of reacting to an event.
+Could activate a position
+could deactivate a position
+could change sellOrders in a position, or remove them. 
+end note
+
+
+class GraphEvent{
+    boolean waitAbove
+    IndicatorValue eventValue
+
+    String getIndicator()
+    IndicatorValue getValue()
+    boolean checkEvent(IndicatorValue)
+}
+note right
+Some graph event.
+Written for tradingview, could be RSI < 30 etc.
+
+Needs to run getIndicator, before calling checkEvent
+checkEvent takes a tuple of indicator name and value
+end note
+
+class IndicatorValue{
+    String indicatorName
+    int indicatorValue
+    String timeFactor
+}
+
+@enduml

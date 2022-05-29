@@ -1,0 +1,121 @@
+@startuml
+class LedgerIO{
+    static Ledger theLedger
+}
+note right
+I'm not sure exactly how to fill this one out yet. 
+end note
+LedgerIO *-- Ledger
+
+
+class Ledger{
+    Position[] positions
+    
+    void sortHighestID()
+
+    Position[] getOpenPositions()
+    Position[] getClosedPositions()
+    Position[] getUnfilledPositions()
+    Position[] getPartiallyFilledPositions()
+    Position[] getFilledPositions()
+    Position[] getInactivePositions()
+    Position[] getActivePosition()
+
+    void clearCanceledPositions()
+    
+    void calculateCurrentPNL()
+    void calculateTotalGoalPNL()
+    void calculateAverageEntry()
+
+    String calculatePNLReport()
+
+    void addPosition(buyOrder, amountUSD)
+    void addPosition(buyOrder, amountUSD, sellOrder[])
+    
+    Position[] getPositions(String filter)
+    Position getPosition(int ID)
+
+    void positionChangeStatus(int ID, String)
+    void positionSetNote(int ID, String)
+    void positionAddToNote(int ID, String)
+    void positionActivate(int ID)
+    void positionDeActivate(int ID)
+
+
+}
+note right
+If ID is only incremented, the last position can ONLY be the highest ID,
+IF i assume, that no position is EVERY taken out of the list OR swaps places.
+This could be ensured by a "sorting" function, that only sorts highest ID
+end note
+
+Ledger *-- "0..*" Position
+
+Class Position {
+    int ID
+    boolean activationStatus
+
+    BuyOrder buyOrder
+    SellOrder sellOrder
+
+    String status
+    String note
+
+    Position(buyOrder, amountUSD)
+    Position(buyOrder, amountUSD, sellOrder[])
+    
+    void createSellOrder(price, percentage)
+
+    void changeStatus()
+    void setNote()
+    void addToNote()
+    void activate()
+    void deActivate()
+
+    BuyOrder getBuyOrder()
+    SellOrder[] getSellOrders()
+
+    float getCurrentValue()
+    float getCurrentPNL()
+    float getSellPNL()
+    boolean isActivated()
+
+    int getID()
+}
+
+note right
+I need to figure out how to handle price/numbers.
+This would depend on programming language,
+and how dependable their Float/double is
+One position can only contain one Buy order, but several sellOrders, for now.
+
+status = position status, not order status
+activationStatus = Should this positions BuyOrder or SellOrder be active?
+inactive + filled = a buyorder meant to be saved7
+inactive + unfilled  = canceled
+note = a simple string. Used for logging, debugging or keeping track of stuff.
+end note
+
+Position *-- "0..*" Order
+
+class Order{
+    boolean isBuyOrder
+
+    GraphEvent orderEvent
+    float amountBTC
+    float amountUSD
+    
+    float fillPercentage
+
+    String status
+
+    boolean isBuyOrder()
+    boolean isSellOrder()
+}
+note right
+status is open/closed/filled
+end note
+
+Order *-- GraphEvent
+
+@enduml

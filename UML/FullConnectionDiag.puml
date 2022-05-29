@@ -1,0 +1,18 @@
+Class Wallet
+
+Wallet *-- StratInterface
+Wallet *-- LedgerIO
+Wallet *-- EventIO
+Wallet *-- LogIO
+
+StratInterface *-- StratControl
+StratControl *-- TacticControl
+
+LedgerIO *-- Ledger
+Ledger *-- "0..*" Position
+
+EventIO *-- EventHandler
+EventHandler *-- GraphIO
+EventHandler *-- "0..*" Trigger
+
+LogIO *-- Log

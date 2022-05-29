@@ -1,0 +1,35 @@
+@startuml
+class LedgerIO{
+    static Ledger theLedger
+}
+note top
+Used to interact with the ledger saved as a static object. 
+In the future this class can be rewritten
+to also handle writing to the Database,
+along with managing what is stored in memory, vs what is on the DB
+end note
+
+LedgerIO *-- Ledger
+
+
+class Ledger{
+    ArrayList<Position> positions
+}
+note right
+This class keeps track of all positions,
+and contains logic to filter these, for example between filled/unfilled,
+"ended" positions, positions that triggeres TP or SL
+"open" positions. 
+positions are handled by their ID. 
+end note
+
+Ledger *-- "0..*" Position
+
+Class Position {
+    int ID
+}
+note bottom
+This class contains a trade.
+Either open, filled, unfilled or closed.
+end note
+@enduml

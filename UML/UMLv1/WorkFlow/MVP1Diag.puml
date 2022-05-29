@@ -1,0 +1,33 @@
+@startwbs
+
+* Workflow for the first MVP
+
+** finish puml files
+*** ledgerIO.puml\nDONE
+*** EventHandler.puml
+*** StratInterface.puml
+*** log.puml
+
+
+** finish the ledgerIO classes DONE
+*** They don't need to pull actual data at first
+*** just assume all orders get filled at first 
+
+** finish the EventHandler classes
+*** GraphIO is the most important one
+*** First goal is to make sure i can trigger a reaction, when it hits a specific price
+*** Next goal is to make sure i can trigger a reaction, when a specific indicator hits a specific value
+*** last goal is to make sure i can trigger a reaction, when i'm a certain distance from one or more targets.
+
+** finish the StratInterface classes
+*** don't try and make advanced strategies. just buy or sell at certain prices
+*** Just make sure the first StratInterface works
+*** then make it so it works with seeral StratInterface classes
+*** For testing the StratInterface classes, would it make sense to have a preset of graph changes, that it will react to.
+**** So instead of reacting to graphIO, \nit will react to a series of price changes or events, written down in a file,\nthat graphIO reads from or something else.
+
+** finish the log classes
+*** Just make it able to contain all sorts of info, maybe Json style
+*** But only add something super simple, like time, price and amount.
+
+@endwbs

@@ -1,0 +1,111 @@
+@startuml
+
+
+
+class Strategy{
+
+}
+
+class Strategy
+note right
+Strategies can be many things,
+but is ultimately used for more complex logic.
+Strategies used Tactics to divide the complex logic up,
+in easier and simpler to manage logic
+
+For example:
+    One strategy, can use one tactic below the 50-EMA,
+    and then reverse it, when above the 50-ema
+
+    Another could be a strategy, that keeps track of the CME-gap.
+    If it detects a large gap, during the saturday,
+        then it could signal this to the other strategies,
+        be given a large amount of the budget, 
+        and then trade off of the range set during sunday, and the gap. 
+
+    A third could be a Strategy that is only operating when NY stock market is open
+    And a fourth that then handles the open positions, while the market is CLOSED.
+end note
+
+Strategy *-- "0..*" Tactic
+
+class Tactic{
+
+}
+
+class Tactic
+note right
+Each tactic is a more simple set of logic. The tactic handles the action as well.
+However, it is important to understand, that a tactic could contain a Strategy.
+A tactic is pretty open, but it is essentially just a simpler PART of a larger strategy.
+A Tactic object is NOT allowed to lack final actions, either in this object, or in objects it contains.
+In other words, should a Tactic not have any final actions,
+it would need to contain objects that do contain it, somewhere.
+
+An example would be to buy with x % every time the 5-EMA crosses the 13-EMA.
+    And everytime it does so, increase the % of the budget. 
+    And then sell as soon as it crosses the 50-EMA or something similar.
+end note
+
+
+class Ledger{
+
+}
+note right
+Ledger contains an ArrayList of Positions.
+Also contains functions to gather and filter data in positions.
+
+end note
+
+Ledger *-- "0..*" position
+
+class position{
+
+}
+note right
+Each position contains a buy price and an amount.
+A tactic creates a position in the Ledger. 
+The Ledger handles the execution.
+Tactic simply handles the prices, stop-loss, take-profit and so on.
+
+It's important to understand that a position can be open, closed, partially filled and unfilled.
+
+IDEA: In the future, it could be interesting to have a reverse position,
+that is essentially only used when trying to stack saved BTC.
+
+IDEA: If i ever make strategies for futures or leverage trading,
+i would simply just create a futures version of a position
+end note
+
+class EventHandler{
+    GraphIO TW
+    Trigger[] Triggers 
+}
+EventHandler *-- "0..*" Trigger
+EventHandler *-- GraphIO
+
+class Trigger{
+}
+note bottom
+a Trigger tracks whether an event happens or not
+Should the event happen, it will contain a reaction,
+that either adds a new position, or changes one
+end note
+
+Trigger *-- Reaction
+
+abstract Reaction{}
+note left
+A reaction is an abstract class.
+it is essentially a catch-all for different ways of reacting to an event.
+Could activate a position
+could deactivate a position
+could change sellOrders in a position, or remove them. 
+end note
+
+class GraphIO{}
+note right
+This class handles reading data from the BTC/USDT graph
+end note
+
+@enduml

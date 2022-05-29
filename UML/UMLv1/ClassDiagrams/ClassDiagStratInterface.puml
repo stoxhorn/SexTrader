@@ -1,0 +1,39 @@
+@startuml
+class Wallet{
+    TFControl TraderAlgo
+    TFInterface IO
+}
+
+Wallet *-- StratInterface
+
+class StratInterface{
+    
+}
+
+StratInterface *-- "1" StratControl
+
+
+class StratControl{
+    ArrayList<Strategy> strategies
+
+}
+StratControl *-- "1..*" Strategy
+
+abstract Strategy{
+    TacticControl tacts
+}
+Strategy *-- TacticControl
+
+
+class TacticControl{
+    ArrayList<Tactic> tactics
+}
+
+TacticControl *-- "1..*" Tactic 
+
+abstract Tactic{
+
+}
+Tactic *-- "0..*" StratControl
+Tactic *-- "0..*" TacticControl
+@enduml

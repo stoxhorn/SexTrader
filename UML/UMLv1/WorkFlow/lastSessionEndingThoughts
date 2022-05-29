@@ -1,0 +1,5 @@
+Just finished coding ledger,
+didn't do the lederIO yet. This should contain the static object of ledger
+
+Next up is eventHandler/eventIO.
+GraphIO and the TradingView API is up first, before i can do anything interesting.
