@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="SexTrader" />
+        <module name="Code" />
       </profile>
     </annotationProcessing>
   </component>

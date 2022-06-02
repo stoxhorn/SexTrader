@@ -2,6 +2,7 @@ package Services;
 
 import Enums.BarField;
 import Enums.TimeFactor;
+import Persistence.TickerHandler;
 import com.binance.connector.client.impl.SpotClientImpl;
 import org.ta4j.core.*;
 
@@ -18,14 +19,15 @@ import static Enums.BarField.OPENTIME;
 public class GraphParser {
 
     private static SpotClientImpl client;
+    private static TickerHandler th;
 
-    public static init(){
-
-    }
-    this.client = new SpotClientImpl(
+    public void init(){
+        this.client = new SpotClientImpl(
                 "VxUM9v6dQECMiwhmBuuBcOH3CDWIHvvXu6ZeszQPgw5VczKthoXE6wCnC24vL6dJ",
-                        "S6Y2Z0oUM8zQOSqyYm1ghN4v3z0RWMIL51FAyOAZQR7SZAauSKrm9vkPansg1QRI");
-        this.gh = new TickerHandler();
+                "S6Y2Z0oUM8zQOSqyYm1ghN4v3z0RWMIL51FAyOAZQR7SZAauSKrm9vkPansg1QRI");
+        this.th = new TickerHandler();
+    }
+
 
     public static BarSeries createBarSeries(String name, String timeFactor, String klines){
         BaseBarSeriesBuilder barSeries = new BaseBarSeriesBuilder();
@@ -117,13 +119,13 @@ public class GraphParser {
 
         parameters.put("symbol", symbol);
         parameters.put("interval", timeFrame);
-        String tmp =client.createMarket().klines(parameters);
-        return this.csvConverter("klines", tmp);
+        String tmp = client.createMarket().klines(parameters);
+        return GraphParser.csvConverter("klines", tmp);
     }
 
     public static String csvConverter(String coloumnType, String arrayString){
         String[] tmp = arrayString.split("],\\[");
-        String csvString = this.getColoumns(coloumnType);
+        String csvString = GraphParser.getColoumns(coloumnType);
         for(String t : tmp){
             String x = t.replace("[", "");
             csvString += x.replace("]","");
